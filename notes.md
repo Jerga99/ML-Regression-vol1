@@ -38,5 +38,8 @@ Equation for line and also for simple linear regression with one parameter/indep
 - b is the y-intercept, when independent variable is 0.
 
 
+Solve each for x = 0; x = 1; x = 2;
 
-
+y = 1x + 1
+y = 2x + 1
+y = 3x + 1
