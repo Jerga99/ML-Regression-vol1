@@ -19,3 +19,9 @@ Instead of following specific instructions, machines use algorithms to analyze l
 2. Type of machine learning where the algorithm learns from labeled data. In supervised learning, the algorithm is trained on a dataset that includes both input data and the corresponding correct output. The goal is for the algorithm to learn a mapping from the input to the output, so that when it's given new input data, it can predict the corresponding output.
 
 3. We need to wait for practical example to see it. heh
+
+# Example time - What is line/linear/graph?
+
+Draw:
+
+y = 0.5 * x + 2
