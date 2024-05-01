@@ -18,7 +18,11 @@ Instead of following specific instructions, machines use algorithms to analyze l
 
 2. Type of machine learning where the algorithm learns from labeled data. In supervised learning, the algorithm is trained on a dataset that includes both input data and the corresponding correct output. The goal is for the algorithm to learn a mapping from the input to the output, so that when it's given new input data, it can predict the corresponding output.
 
-3. We need to wait for practical example to see it. heh
+3. In simple linear regression, where there's just one input variable, our goal is to find a line that best describes the relationship between the input variable (x) and the output variable (y).
+
+   This line is often called the 'line of best fit.' We try to draw this line through our data points in such a way that it summarizes the relationship between the input and output as accurately as possible.
+
+   The line is drawn to minimize the distance between itself and all the data points. This way, we can use this line to predict the output for any given input, which can be incredibly helpful in making forecasts or decisions based on the data.
 
 # Example time - What is line/linear/graph?
 
