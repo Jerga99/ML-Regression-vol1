@@ -24,4 +24,19 @@ Instead of following specific instructions, machines use algorithms to analyze l
 
 Draw:
 
-y = 0.5 * x + 2
+y = 2 + 0.5 * x
+
+y = 2 + 0.5x
+
+y = b + mx
+
+Equation for line and also for simple linear regression with one parameter/independent variables/feature
+
+- y is the predicted value, dependent variable
+- x is the input feature, independent variable
+- m is the slope (weight) of the line,
+- b is the y-intercept, when independent variable is 0.
+
+
+
+
