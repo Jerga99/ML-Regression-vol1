@@ -34,11 +34,18 @@ function App() {
 
   const trainModel = () => {
 
+    // Step 1 - Compute means
     const meanStudyHours = studyHoursData.reduce((sum, val) => sum + val, 0) / studyHoursData.length;
     const meanExamScores = examScoresData.reduce((sum, val) => sum + val, 0) / examScoresData.length;
 
-    console.log("Mean Hours: " + meanStudyHours);
-    console.log("Mean Scores: " + meanExamScores);
+
+    // Step 2 - Compute Slope (B1, m)
+    let numerator = studyHoursData.reduce((sum, hour, i) => sum + (hour - meanStudyHours) * (examScoresData[i] - meanExamScores), 0);
+    let denominator = 0;
+
+
+
+    console.log(numerator);
   }
 
 
