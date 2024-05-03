@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Plot from "react-plotly.js";
 
@@ -7,6 +7,7 @@ const studyHoursData = [1, 2, 3, 4, 5];
 const examScoresData = [55, 70, 80, 85, 90];
 
 function App() {
+  const [regressionLine, setRegressionLine] = useState([]);
 
   const data = [{
     x: studyHoursData,
@@ -14,6 +15,13 @@ function App() {
     mode: "markers",
     type: "scatter",
     marker: { color: "blue" }
+  }, {
+    x: studyHoursData,
+    y: regressionLine,
+    mode: "lines",
+    type: "scatter",
+    name: "Regression Line",
+    line: {color: "red"}
   }];
 
   const layout = {
@@ -43,8 +51,10 @@ function App() {
     const numerator = studyHoursData.reduce((sum, hour, i) => sum + (hour - meanStudyHours) * (examScoresData[i] - meanExamScores), 0);
     const denominator = studyHoursData.reduce((sum, hour) => sum + Math.pow(hour - meanStudyHours, 2) ,0);
     const b1 = numerator / denominator;
+    const b0 = meanExamScores - b1 * meanStudyHours;
 
-    console.log(b1);
+    const regressionYs = studyHoursData.map(x => b0 + b1 * x);
+    setRegressionLine(regressionYs);
   }
 
 
