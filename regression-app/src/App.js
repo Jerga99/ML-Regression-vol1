@@ -40,12 +40,11 @@ function App() {
 
 
     // Step 2 - Compute Slope (B1, m)
-    let numerator = studyHoursData.reduce((sum, hour, i) => sum + (hour - meanStudyHours) * (examScoresData[i] - meanExamScores), 0);
-    let denominator = 0;
+    const numerator = studyHoursData.reduce((sum, hour, i) => sum + (hour - meanStudyHours) * (examScoresData[i] - meanExamScores), 0);
+    const denominator = studyHoursData.reduce((sum, hour) => sum + Math.pow(hour - meanStudyHours, 2) ,0);
+    const b1 = numerator / denominator;
 
-
-
-    console.log(numerator);
+    console.log(b1);
   }
 
 
