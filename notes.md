@@ -65,3 +65,13 @@ Moving towards the average: This original idea reflects the notion that extreme 
 For example: students styding for test, student group A studying 4 hours have 90 score,
 student group B has only 80.
 If the test performed on multiple groups, it tends to regress to the avarage 85
+
+## Exercise 1 - Score prediction depending on study hours
+
+|  Study Hours(x) | Exam Score(y)  |
+|---|---|
+|  1 | 55  |
+|  2 | 70  |
+|  3 | 80  |
+|  4 | 85  |
+|  5 | 90  |
