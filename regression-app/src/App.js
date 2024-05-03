@@ -1,15 +1,16 @@
 
+import { useEffect } from 'react';
 import './App.css';
 import Plot from "react-plotly.js";
 
-const studyHours = [1, 2, 3, 4, 5];
-const examScores = [55, 70, 80, 85, 90];
+const studyHoursData = [1, 2, 3, 4, 5];
+const examScoresData = [55, 70, 80, 85, 90];
 
 function App() {
 
   const data = [{
-    x: studyHours,
-    y: examScores,
+    x: studyHoursData,
+    y: examScoresData,
     mode: "markers",
     type: "scatter",
     marker: { color: "blue" }
@@ -26,6 +27,20 @@ function App() {
       autorange: true,
     },
   }
+
+  useEffect(() => {
+    trainModel();
+  }, []);
+
+  const trainModel = () => {
+
+    const meanStudyHours = studyHoursData.reduce((sum, val) => sum + val, 0) / studyHoursData.length;
+    const meanExamScores = examScoresData.reduce((sum, val) => sum + val, 0) / examScoresData.length;
+
+    console.log("Mean Hours: " + meanStudyHours);
+    console.log("Mean Scores: " + meanExamScores);
+  }
+
 
   return (
     <div className="App">
