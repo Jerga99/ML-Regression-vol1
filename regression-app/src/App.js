@@ -10,6 +10,7 @@ function App() {
   const [regressionLine, setRegressionLine] = useState([]);
   const [regressionParams, setRegressionParams] = useState({b0: 0, b1: 0});
   const [inputHours, setInputHours] = useState("");
+  const [predictedScore, setPredictedScore] = useState(null);
 
   const data = [{
     x: studyHoursData,
@@ -39,8 +40,13 @@ function App() {
   }
 
   useEffect(() => {
-    console.log(inputHours);
-  }, [inputHours]);
+    if (inputHours === "") {
+      setPredictedScore(null);
+    } else if (parseFloat(inputHours) >= 0) {
+      const score = regressionParams.b0 + regressionParams.b1 * parseFloat(inputHours);
+      setPredictedScore(score <= 100 ? score.toFixed(2) : 100);
+    }
+  }, [inputHours, regressionParams]);
 
   useEffect(() => {
     trainModel();
@@ -74,6 +80,11 @@ function App() {
         placeholder="Enter study hours"
         style={{marginBottom: 10}}
       />
+      { predictedScore &&
+        <div>
+          Predicted exam score: {predictedScore}
+        </div>
+      }
       <div>b0: {regressionParams.b0}</div>
       <div>b1: {regressionParams.b1}</div>
       <Plot
