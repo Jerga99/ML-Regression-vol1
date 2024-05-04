@@ -8,6 +8,8 @@ const examScoresData = [55, 70, 80, 85, 90];
 
 function App() {
   const [regressionLine, setRegressionLine] = useState([]);
+  const [regressionParams, setRegressionParams] = useState({b0: 0, b1: 0});
+  const [inputHours, setInputHours] = useState("");
 
   const data = [{
     x: studyHoursData,
@@ -37,15 +39,17 @@ function App() {
   }
 
   useEffect(() => {
+    console.log(inputHours);
+  }, [inputHours]);
+
+  useEffect(() => {
     trainModel();
   }, []);
 
   const trainModel = () => {
-
     // Step 1 - Compute means
     const meanStudyHours = studyHoursData.reduce((sum, val) => sum + val, 0) / studyHoursData.length;
     const meanExamScores = examScoresData.reduce((sum, val) => sum + val, 0) / examScoresData.length;
-
 
     // Step 2 - Compute Slope (B1, m)
     const numerator = studyHoursData.reduce((sum, hour, i) => sum + (hour - meanStudyHours) * (examScoresData[i] - meanExamScores), 0);
@@ -55,12 +59,25 @@ function App() {
 
     const regressionYs = studyHoursData.map(x => b0 + b1 * x);
     setRegressionLine(regressionYs);
+    setRegressionParams({b0, b1});
   }
 
 
   return (
     <div className="App">
+      <input
+        type="number"
+        value={inputHours}
+        onChange={(e) => {
+          setInputHours(e.target.value);
+        }}
+        placeholder="Enter study hours"
+        style={{marginBottom: 10}}
+      />
+      <div>b0: {regressionParams.b0}</div>
+      <div>b1: {regressionParams.b1}</div>
       <Plot
+        style={{width: "100%", height: 500}}
         data={data}
         layout={layout}
       />
