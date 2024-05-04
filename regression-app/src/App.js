@@ -52,6 +52,17 @@ function App() {
     trainModel();
   }, []);
 
+  useEffect(() => {
+    if (regressionParams.b0 > 0 && regressionParams.b1 > 0) {
+      // Model Testing
+      const predictionsFromInputs = studyHoursData.map((x) => regressionParams.b0 + regressionParams.b1 * x);
+      const residuals = predictionsFromInputs.map((y, i) => examScoresData[i] - y);
+
+      console.log(residuals);
+
+    }
+  }, [regressionParams]);
+
   const trainModel = () => {
     // Step 1 - Compute means
     const meanStudyHours = studyHoursData.reduce((sum, val) => sum + val, 0) / studyHoursData.length;
