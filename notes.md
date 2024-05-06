@@ -97,17 +97,21 @@ Can be misleadingly high in models with many variables.
 
 The R-squared (R²) value for your regression model is approximately 0.9383. This indicates that about 93.83% of the variability in the exam scores is explained by the number of study hours, based on your model. This suggests a strong linear relationship between the study hours and the exam scores in your dataset.
 
-
 ## MAE (Mean Absolute Error)
 
 The Mean Absolute Error is a measure of differences between paired observations.
 
 is particularly useful when you need a robust measure that can stand out outliers, i.e., few large errors will not skew the result too much, making it more reliable when the data contains many outliers.
 
+## MSE
+MSE measures the average of the squares of the errors—that is, the average squared difference between the estimated values and the actual value.
+
 ## When to Use Which?
 
 MAE is particularly useful when you need a robust measure that can stand out outliers, i.e., few large errors will not skew the result too much, making it more reliable when the data contains many outliers.
 
 R² is useful when you need to explain to a non-technical audience how well the variability in the response variable is being captured by the model. It is also more common for comparing the predictive quality of models on the same problem.
+
+A lower MSE indicates a better fit of the model to the data. Unlike MAE, MSE gives a relatively high weight to large errors (due to the squaring of each term), making it useful when large errors are particularly undesirable.
 
 

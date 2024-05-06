@@ -65,10 +65,10 @@ function App() {
       const ssTotal = examScoresData.reduce((sum, score) => sum + Math.pow(score - meanExamScores, 2), 0);
 
       const r2 = 1 - (ssResiduals / ssTotal);
-
       const mae = residuals.reduce((sum, residual) => sum + Math.abs(residual), 0) / residuals.length;
+      const mse = residuals.reduce((sum, residual) => sum + Math.pow(residual, 2), 0) / residuals.length;
 
-      console.log(residuals);
+      console.log(mse);
     }
   }, [regressionParams]);
 
