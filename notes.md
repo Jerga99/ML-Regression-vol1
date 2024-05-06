@@ -75,3 +75,24 @@ If the test performed on multiple groups, it tends to regress to the avarage 85
 |  3 | 80  |
 |  4 | 85  |
 |  5 | 90  |
+
+
+## Linear Regression Steps
+
+1. Compute Means
+2. Compute Slope
+3. Compute y-Intercept
+4. Predict Values
+
+### Evaluation
+1. R^2 (r squared)
+2. MAE (Mean Absolute Error)
+
+
+
+## R^2
+The R-squared metric provides an indication of how well the independent variable(s) predict the dependent variable.
+R² value ranges from 0 to 1, where 1 indicates perfect prediction.
+Can be misleadingly high in models with many variables.
+
+
