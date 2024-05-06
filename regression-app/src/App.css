@@ -5,3 +5,25 @@
 .App {
   padding: 100px;
 }
+
+
+.model-container {
+  display: "flex";
+}
+
+.model-item {
+  width: 200px;
+  padding: 5px;
+}
+
+.model-item > img {
+  width: 100%;
+}
+
+.model-item > div {
+  margin: 5px 0;
+}
+
+.model-item > img:hover {
+  cursor: pointer;
+}
