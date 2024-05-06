@@ -6,6 +6,9 @@ import Plot from "react-plotly.js";
 const studyHoursData = [1, 2, 3, 4, 5];
 const examScoresData = [55, 70, 80, 85, 90];
 
+const meanStudyHours = studyHoursData.reduce((sum, val) => sum + val, 0) / studyHoursData.length;
+const meanExamScores = examScoresData.reduce((sum, val) => sum + val, 0) / examScoresData.length;
+
 function App() {
   const [regressionLine, setRegressionLine] = useState([]);
   const [regressionParams, setRegressionParams] = useState({b0: 0, b1: 0});
@@ -58,16 +61,17 @@ function App() {
       const predictionsFromInputs = studyHoursData.map((x) => regressionParams.b0 + regressionParams.b1 * x);
       const residuals = predictionsFromInputs.map((y, i) => examScoresData[i] - y);
 
-      console.log(residuals);
+      const ssResiduals = residuals.reduce((sum, residual) => sum + Math.pow(residual, 2), 0);
+      const ssTotal = examScoresData.reduce((sum, score) => sum + Math.pow(score - meanExamScores, 2), 0);
+
+      const r2 = 1 - (ssResiduals / ssTotal);
+      console.log(r2);
 
     }
   }, [regressionParams]);
 
   const trainModel = () => {
     // Step 1 - Compute means
-    const meanStudyHours = studyHoursData.reduce((sum, val) => sum + val, 0) / studyHoursData.length;
-    const meanExamScores = examScoresData.reduce((sum, val) => sum + val, 0) / examScoresData.length;
-
     // Step 2 - Compute Slope (B1, m)
     const numerator = studyHoursData.reduce((sum, hour, i) => sum + (hour - meanStudyHours) * (examScoresData[i] - meanExamScores), 0);
     const denominator = studyHoursData.reduce((sum, hour) => sum + Math.pow(hour - meanStudyHours, 2) ,0);
