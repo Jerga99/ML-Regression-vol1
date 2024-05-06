@@ -89,22 +89,24 @@ function ExamScorePrediction() {
 
   return (
     <div>
-      <input
-        type="number"
-        value={inputHours}
-        onChange={(e) => {
-          setInputHours(e.target.value);
-        }}
-        placeholder="Enter study hours"
-        style={{marginBottom: 10}}
-      />
-      { predictedScore &&
-        <div>
-          Predicted exam score: {predictedScore}
-        </div>
-      }
-      <div>b0: {regressionParams.b0}</div>
-      <div>b1: {regressionParams.b1}</div>
+      <div style={{textAlign: "center"}}>
+        <input
+          type="number"
+          value={inputHours}
+          onChange={(e) => {
+            setInputHours(e.target.value);
+          }}
+          placeholder="Enter study hours"
+          style={{marginBottom: 10}}
+        />
+        { predictedScore &&
+          <div>
+            Predicted exam score: {predictedScore}
+          </div>
+        }
+        <div>b0: {regressionParams.b0}</div>
+        <div>b1: {regressionParams.b1}</div>
+      </div>
       <Plot
         style={{width: "100%", height: 500}}
         data={data}

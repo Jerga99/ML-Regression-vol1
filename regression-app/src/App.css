@@ -9,6 +9,7 @@
 
 .model-container {
   display: "flex";
+  margin-bottom: 20px;
 }
 
 .model-item {
@@ -26,4 +27,9 @@
 
 .model-item > img:hover {
   cursor: pointer;
+}
+
+.model-item.active {
+  border: 2px solid #4CAF50;
+  border-radius: 8px;
 }

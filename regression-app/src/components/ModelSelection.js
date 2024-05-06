@@ -12,13 +12,22 @@ const model1 = {
 const models = [model1];
 
 
-function ModelSelection() {
+function ModelSelection({onChange, activeId}) {
   return (
     <div className="model-container">
       {models.map(model =>
-        <div key={model.id} className="model-item">
+        <div
+          key={model.id}
+          className={`model-item ${model.id === activeId ? "active" : ""}`}
+        >
           <div>{model.name}</div>
-          <img src={model.img} alt=""/>
+          <img
+            onClick={() => {
+              onChange(model.id);
+            }}
+            src={model.img}
+            alt=""
+          />
           <div><b>Type:</b> {model.type}</div>
           <i>{model.description}</i>
         </div>
