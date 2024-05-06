@@ -68,7 +68,7 @@ function App() {
 
       const mae = residuals.reduce((sum, residual) => sum + Math.abs(residual), 0) / residuals.length;
 
-      console.log(mae);
+      console.log(residuals);
     }
   }, [regressionParams]);
 
