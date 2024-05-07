@@ -1,5 +1,5 @@
 
-
+const math = require("mathjs");
 
 const X = [
   [1, 6], // [study hour, sleep hour]
@@ -10,12 +10,12 @@ const X = [
 ];
 
 const Y = [60,55,50,70,85]; // scores
-
 const XWithIntercept = X.map(row => [1].concat(row));
 
-console.log(XWithIntercept);
+const XMatrix = math.matrix(XWithIntercept);
+const XTransposed = math.transpose(XMatrix);
+const XTransposedX = math.multiply(XTransposed, XMatrix);
 
-console.log("------------");
-console.log("------------");
+console.log(XTransposedX);
 
-console.log(Y);
+
