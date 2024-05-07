@@ -8,13 +8,14 @@
 
 
 .model-container {
-  display: "flex";
+  display: flex;
   margin-bottom: 20px;
 }
 
 .model-item {
   width: 200px;
   padding: 5px;
+  margin: 20px;
 }
 
 .model-item > img {

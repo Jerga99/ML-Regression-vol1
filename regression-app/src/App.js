@@ -3,9 +3,11 @@ import { useState } from 'react';
 import './App.css';
 import ExamScorePrediction from './components/ExamScorePrediction';
 import ModelSelection from './components/ModelSelection';
+import MrExamScorePrediction from './components/MrExamScorePrediction';
 
 const modelMap = {
-  "1": ExamScorePrediction
+  "1": ExamScorePrediction,
+  "2": MrExamScorePrediction,
 }
 
 function App() {
