@@ -19,7 +19,10 @@ const XTransposed = math.transpose(XMatrix);
 const XTransposedX = math.multiply(XTransposed, XMatrix);
 const XTransposedY = math.multiply(XTransposed, YMatrix);
 
-console.log(XTransposedY);
+const inverseXTransposedX = math.inv(XTransposedX);
+const BMatrix = math.multiply(inverseXTransposedX, XTransposedY);
+
+console.log(BMatrix);
 
 
 
