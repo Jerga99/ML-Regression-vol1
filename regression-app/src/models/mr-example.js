@@ -1,5 +1,6 @@
 
 const math = require("mathjs");
+const fs = require("fs");
 
 const X = [
   [1, 6], // [study hour, sleep hour]
@@ -22,7 +23,19 @@ const XTransposedY = math.multiply(XTransposed, YMatrix);
 const inverseXTransposedX = math.inv(XTransposedX);
 const BMatrix = math.multiply(inverseXTransposedX, XTransposedY);
 
-console.log(BMatrix);
+
+const coefficients = BMatrix.toArray().map(c => c[0].toFixed(2));
+
+fs.writeFile(
+  "./public/mr-example-coefficients.json",
+  JSON.stringify({coefficients}, null, 2),
+  (err) => {
+    if (err) {
+      console.error(`Error writing file:`, err);
+    } else {
+      console.log("Coefficients has been saved!");
+    }
+  });
 
 
 
