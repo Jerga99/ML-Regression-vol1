@@ -19,7 +19,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "models-1": "node ./src/models/mr-example.js"
+    "models-1": "node ./src/models/mr-example.js",
+    "models-salary": "node ./src/models/mrSalaryModel.js"
   },
   "eslintConfig": {
     "extends": [
