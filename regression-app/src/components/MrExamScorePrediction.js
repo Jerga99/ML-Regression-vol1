@@ -14,6 +14,28 @@ const MrExamScorePrediction = () => {
       .catch(error => console.error("Error fetching coefficients: ", error))
   }, []);
 
+  let x1Surface = [], x2Surface = [], ySurface = [];
+
+  if (coefficients.length > 0) {
+    for (let x1 = 0; x1 < 5; x1 += 0.5) {
+      for (let x2 = 0; x2 < 7; x2 += 0.5) {
+        x1Surface.push(x1);
+        x2Surface.push(x2);
+        ySurface.push(coefficients[0] + coefficients[1] * x1 + coefficients[2] * x2);
+      }
+    }
+  }
+
+  const regressionPlane = {
+    x: x1Surface,
+    y: x2Surface,
+    z: ySurface,
+    type: "mesh3d",
+    opacity: 0.5,
+    color: "blue",
+    name: "Plane"
+  };
+
   const trace = {
     x: studyHours,
     y: sleepHours,
@@ -45,7 +67,7 @@ const MrExamScorePrediction = () => {
 
   return (
     <Plot
-      data={[trace]}
+      data={[trace, regressionPlane]}
       layout={layout}
       style={{ width: '100%', height: 800 }}
     />
