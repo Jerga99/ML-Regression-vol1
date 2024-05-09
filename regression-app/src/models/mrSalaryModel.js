@@ -1,6 +1,7 @@
 
 const { readCSV } = require("./utils");
 const seedrandom = require("seedrandom");
+const MLR = require("ml-regression-multivariate-linear");
 
 const splitData = (data, testSize = 0.3, seed="something") => {
   const rng = seedrandom(seed);
@@ -17,7 +18,12 @@ async function computeModel(path) {
 
   const {testData, trainData} = splitData(data, 0.3, "anothersomething!");
 
+  const trainInputs = trainData.map(row => [row[0], row[1]]);
+  const trainOutpus = trainData.map(row => [row[2]]);
 
+  const regression = new MLR(trainInputs, trainOutpus, {intercept: true});
+
+  console.log(regression);
 }
 
 computeModel("./public/age_exp_salary_dataset.csv");
