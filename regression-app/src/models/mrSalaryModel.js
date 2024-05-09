@@ -1,44 +1,23 @@
 
-const fs = require("fs");
-const {parse} = require("csv-parse");
+const { readCSV } = require("./utils");
 
-const parseDataType = (data) => {
+const splitData = (data, testSize = 0.3) => {
+  const shuffled = data.slice().sort(() => 0.5 - Math.random());
+  const testCount = Math.floor(data.length * testSize);
 
-  if (/^-?\d+$/.test(data)) {
-    return parseInt(data, 10);
-  }
-
-  else if (/^-?\d*\.\d+$/.test(data)) {
-    return parseFloat(data);
-  }
-
-  return data;
+  const testData = shuffled.slice(0, testCount);
+  const trainData = shuffled.slice(testCount);
+  return {trainData, testData};
 }
-
-const readCSV = (filePath, keys) => {
-  return new Promise((resolve, reject) => {
-    let data = [];
-
-    fs.createReadStream(filePath)
-      .pipe(parse({columns: true, skip_empty_lines: true}))
-      .on("data", (urow) => {
-        const row = keys.map(key => {
-          return parseDataType(urow[key])
-        });
-
-        data.push(row);
-      })
-      .on("end", () => {
-        resolve(data);
-      })
-      .on("error", reject)
-  });
-}
-
 
 async function computeModel(path) {
   const data = await readCSV(path, ["age", "experience", "income"]);
-  console.log(data);
+
+  const {testData, trainData} = splitData(data);
+
+  console.log(testData);
+  console.log("TRAIN DATA");
+  console.log(trainData);
 }
 
 computeModel("./public/age_exp_salary_dataset.csv");
