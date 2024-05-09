@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Plot from 'react-plotly.js';
 
 const MrExamScorePrediction = () => {
   const studyHours = [1, 2, 3, 4, 5];
   const sleepHours = [6, 2, 1, 5, 7];
   const score = [60, 55, 50, 70, 85];
+  const [coefficients, setCoefficients] = useState([]);
+
+  useEffect(() => {
+    fetch("/mr-example-coefficients.json")
+      .then(response => response.json())
+      .then(data => setCoefficients(data.coefficients.map(Number)))
+      .catch(error => console.error("Error fetching coefficients: ", error))
+  }, []);
 
   const trace = {
     x: studyHours,
