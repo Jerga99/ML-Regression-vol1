@@ -14,12 +14,12 @@ const splitData = (data, testSize = 0.3, seed="something") => {
   return {trainData, testData};
 }
 
-const calculateR2 = (data, testOutputs, predictions) => {
-  console.log(data);
-  console.log("----");
-  console.log(testOutputs);
-  console.log("----");
-  console.log(predictions);
+const calculateR2 = (testOutputs, predictions) => {
+  const yMean = testOutputs.reduce((sum, val) => sum + val, 0) / testOutputs.length;
+  const ssRes = testOutputs.reduce((sum, output, i) => sum + Math.pow(output - predictions[i], 2), 0);
+  const ssTot = testOutputs.reduce((sum, output) => sum + Math.pow(output - yMean, 2), 0);
+
+  return 1 - (ssRes / ssTot);
 }
 
 async function computeModel(path) {
@@ -38,15 +38,17 @@ async function computeModel(path) {
   const testOutputs = testData.map(row => [row[2]]);
   const predictions = regression.predict(testInputs);
 
-  calculateR2(
-    data,
+  const r2 = calculateR2(
     testOutputs.flatMap(o => o),
     predictions.flatMap(p => p)
-  )
+  );
+
+  console.log(r2);
 
   const jsonData = JSON.stringify({
     intercepts: weights[weights.length - 1],
-    slopes: weights.slice(0,  weights.length - 1)
+    slopes: weights.slice(0,  weights.length - 1),
+    r2
   }, null, 2);
 
   fs.writeFile("./public/salaryCoefficients.json", jsonData, (err) => {
