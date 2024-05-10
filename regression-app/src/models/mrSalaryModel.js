@@ -14,6 +14,14 @@ const splitData = (data, testSize = 0.3, seed="something") => {
   return {trainData, testData};
 }
 
+const calculateR2 = (data, testOutputs, predictions) => {
+  console.log(data);
+  console.log("----");
+  console.log(testOutputs);
+  console.log("----");
+  console.log(predictions);
+}
+
 async function computeModel(path) {
   const data = await readCSV(path, ["age", "experience", "income"]);
 
@@ -25,6 +33,16 @@ async function computeModel(path) {
   const regression = new MLR(trainInputs, trainOutpus, {intercept: true});
 
   const weights = regression.weights.flatMap(w => w);
+
+  const testInputs = testData.map(row => [row[0], row[1]]);
+  const testOutputs = testData.map(row => [row[2]]);
+  const predictions = regression.predict(testInputs);
+
+  calculateR2(
+    data,
+    testOutputs.flatMap(o => o),
+    predictions.flatMap(p => p)
+  )
 
   const jsonData = JSON.stringify({
     intercepts: weights[weights.length - 1],
