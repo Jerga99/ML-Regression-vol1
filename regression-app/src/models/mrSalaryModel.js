@@ -36,19 +36,22 @@ async function computeModel(path) {
 
   const testInputs = testData.map(row => [row[0], row[1]]);
   const testOutputs = testData.map(row => [row[2]]);
-  const predictions = regression.predict(testInputs);
+
+  const predictions = regression.predict(testInputs).flatMap(p => p);
 
   const r2 = calculateR2(
     testOutputs.flatMap(o => o),
-    predictions.flatMap(p => p)
+    predictions
   );
-
-  console.log(r2);
 
   const jsonData = JSON.stringify({
     intercepts: weights[weights.length - 1],
     slopes: weights.slice(0,  weights.length - 1),
-    r2
+    r2,
+    trainData: trainData.map(data => ({age: data[0], experience: data[1], income: data[2]})),
+    testData: testData.map(data => ({age: data[0], experience: data[1], income: data[2]})),
+    predictions: testData.map((data, i) => ({age: data[0], experience: data[1], income: predictions[i]})),
+
   }, null, 2);
 
   fs.writeFile("./public/salaryCoefficients.json", jsonData, (err) => {
