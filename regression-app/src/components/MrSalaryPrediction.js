@@ -6,6 +6,9 @@ import Plot from 'react-plotly.js';
 
 const MrSalaryPrediction = () => {
   const [regression, setRegression] = useState(null);
+  const [age, setAge] = useState("");
+  const [experience, setExperience] = useState("");
+  const [prediciton, setPrecition] = useState(null);
 
   useEffect(() => {
     fetch("/salaryCoefficients.json")
@@ -13,6 +16,18 @@ const MrSalaryPrediction = () => {
       .then(data => setRegression(data))
       .catch(error => console.error("Error fetching coefficients: ", error))
   }, []);
+
+  useEffect(() => {
+    if (age === 0 || experience === 0) {
+      setPrecition(null);
+      return;
+    }
+
+    if (regression && age !== "" && experience !== "") {
+      const income = regression.intercept + regression.slopes[0] * age + regression.slopes[1] * experience;
+      setPrecition(income.toFixed(2));
+    }
+  }, [age, experience, regression])
 
   const regressionPlane = useMemo(() => {
     if (regression) {
@@ -112,11 +127,34 @@ const MrSalaryPrediction = () => {
   };
 
   return (
-    <Plot
-      data={[trainData, testData, predictions, regressionPlaneData]}
-      layout={layout}
-      style={{ width: '100%', height: 800 }}
-    />
+    <div>
+      <div style={{textAlign: "center"}}>
+        <div style={{marginBottom: 10}}>
+          <input
+            type="number"
+            value={age}
+            onChange={(e) => setAge(Number(e.target.value))}
+            placeholder="age"
+          />
+          <input
+            type="number"
+            onChange={(e) => setExperience(Number(e.target.value))}
+            placeholder="experience"
+          />
+        </div>
+        <div>
+          Predicted Income: {
+            prediciton ? `${prediciton}$` :
+            <span style={{color: "red"}}>Enter Values to get prediction</span>
+          }
+        </div>
+      </div>
+      <Plot
+        data={[trainData, testData, predictions, regressionPlaneData]}
+        layout={layout}
+        style={{ width: '100%', height: 800 }}
+      />
+    </div>
   );
 };
 
