@@ -45,7 +45,7 @@ async function computeModel(path) {
   );
 
   const jsonData = JSON.stringify({
-    intercepts: weights[weights.length - 1],
+    intercept: weights[weights.length - 1],
     slopes: weights.slice(0,  weights.length - 1),
     r2,
     trainData: trainData.map(data => ({age: data[0], experience: data[1], income: data[2]})),

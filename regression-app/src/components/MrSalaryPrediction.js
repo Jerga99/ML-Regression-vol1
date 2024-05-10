@@ -1,7 +1,7 @@
 
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Plot from 'react-plotly.js';
 
 const MrSalaryPrediction = () => {
@@ -14,9 +14,47 @@ const MrSalaryPrediction = () => {
       .catch(error => console.error("Error fetching coefficients: ", error))
   }, []);
 
+  const regressionPlane = useMemo(() => {
+    if (regression) {
+      const allAges = regression.trainData.map(d => d.age);
+      const allExperiences = regression.trainData.map(d => d.experience);
+
+      const x1Range = [Math.min(...allAges), Math.max(...allAges)];
+      const x2Range = [Math.min(...allExperiences), Math.max(...allExperiences)];
+
+      const x1Step = (x1Range[1] - x1Range[0]) / 10;
+      const x2Step = (x2Range[1] - x2Range[0]) / 10;
+
+      const x1Points = [], x2Points = [], yPoints = [];
+
+      for (let x1 = x1Range[0]; x1 < x1Range[1]; x1 += x1Step) {
+        for (let x2 = x2Range[0]; x2 < x2Range[1]; x2 += x2Step){
+          x1Points.push(x1);
+          x2Points.push(x2);
+          const y = regression.intercept + regression.slopes[0] * x1 + regression.slopes[1] * x2;
+          yPoints.push(y);
+        }
+      }
+
+      return {x1Points, x2Points, yPoints};
+    }
+  }, [regression]);
+
   if (!regression) {
     return <div>Loading...</div>
   }
+
+  console.log(regressionPlane);
+
+  const regressionPlaneData = {
+    x: regressionPlane.x1Points,
+    y: regressionPlane.x2Points,
+    z: regressionPlane.yPoints,
+    type: "mesh3d",
+    color: "lightpink",
+    name: "regression plane"
+  }
+
 
   const trainData = {
     x: regression.trainData.map(d => d.age),
@@ -75,7 +113,7 @@ const MrSalaryPrediction = () => {
 
   return (
     <Plot
-      data={[trainData, testData, predictions]}
+      data={[trainData, testData, predictions, regressionPlaneData]}
       layout={layout}
       style={{ width: '100%', height: 800 }}
     />
