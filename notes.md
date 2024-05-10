@@ -115,3 +115,49 @@ R² is useful when you need to explain to a non-technical audience how well the 
 A lower MSE indicates a better fit of the model to the data. Unlike MAE, MSE gives a relatively high weight to large errors (due to the squaring of each term), making it useful when large errors are particularly undesirable.
 
 
+
+## Results of Salary Prediction
+
+## Std Error
+
+yi​ are the actual values of the dependent variable.
+y^i​ are the predicted values from the regression model.
+n is the number of observations.
+k is the number of predictors (excluding the intercept).
+
+This is the same as we computed MSE, but this is also square rooted
+
+In your case, the SER of 1192 suggests that predictions from the model typically deviate from the actual income values by about this amount, on average. This insight is valuable for understanding the limitations of your model's predictive capabilities and for setting realistic expectations when using the model to make decisions or predictions based on new data.
+
+## Std Errors
+
+Coefficient for Age (42.78): This standard error indicates that the coefficient estimate for age can vary by about ±42.78 units. A smaller standard error would suggest more precise estimates of the coefficient.
+
+Coefficient for Experience (96.45): Similarly, the standard error of approximately ±96.45 for experience implies more variation in the estimates of the coefficient for experience, indicating less certainty in this estimate compared to the age coefficient under the same experimental conditions.
+
+Intercept (1409.0338424093513): The intercept's large standard error of about ±1409.0338424093513 reflects substantial uncertainty about where the true regression plane intersects the z-axis (income) when all predictor variables are zero.
+
+For instance, if you conducted a study with 100 employees from a company and estimated the relationship between their age, experience, and salary, and then repeated this study many times—each time randomly selecting 100 employees (assuming the company is large enough to provide fresh samples every time)—the age coefficient you calculate each time would vary. The standard error (42.78 in your case) quantifies how much fluctuation you might expect in the age coefficient due to this process of random sampling.
+
+
+## T Values
+
+t = coeficient / error
+
+In statistical hypothesis testing, especially in regression analysis, the critical t-value serves as a threshold to decide whether to reject the null hypothesis. The null hypothesis in the context of regression is typically that the coefficient (beta) of a predictor is zero, which implies that the predictor has no effect on the dependent variable.
+
+Common Critical Values: For a 95% confidence level and a large sample size, the critical t-values often approach approximately ±2.00. This means that if the t-statistic exceeds these values (either in the positive or negative direction), the null hypothesis (that the coefficient equals zero) can be rejected with less than 5% risk of being wrong (Type I error).
+
+
+For Age (-2.5586769483003673):
+    Value: -2.5586769483003673
+    Interpretation: The t-statistic is below -2, which often suggests that the coefficient is statistically significant if we consider a common threshold for significance. The negative sign indicates a negative relationship between age and the outcome variable (income). Given the common critical t-value around 2.00 (or -2.00) for degrees of freedom typical in regression scenarios, this suggests that age may significantly negatively influence income, though the context and exact p-value would provide firmer conclusions.
+
+For Experience (22.00434506904264):
+    Value: 22.00434506904264
+    Interpretation: This is a very high t-statistic, indicating a strong and statistically significant positive relationship between experience and income. This suggests that the effect of experience on income is robust and reliably different from zero.
+
+For Intercept (22.91787216735159):
+    Value: 22.91787216735159
+    Interpretation: Similarly to the coefficient for experience, the intercept's t-statistic is very high, indicating that the intercept is statistically significant. The intercept represents the expected value of the outcome variable (income) when all predictors (age and experience) are zero.
+
