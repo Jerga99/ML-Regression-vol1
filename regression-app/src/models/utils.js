@@ -15,18 +15,29 @@ const parseDataType = (data) => {
   return data;
 }
 
-const readCSV = (filePath, keys) => {
+const readCSV = (filePath, keys, parsing) => {
   return new Promise((resolve, reject) => {
     let data = [];
 
     fs.createReadStream(filePath)
       .pipe(parse({columns: true, skip_empty_lines: true}))
       .on("data", (urow) => {
-        const row = keys.map(key => {
-          return parseDataType(urow[key])
-        });
 
-        data.push(row);
+        if (parsing === "dictionary") {
+          const item = {};
+
+          keys.forEach((key) => {
+            item[key] = parseDataType(urow[key]);
+          });
+
+          data.push(item);
+        } else {
+          const row = keys.map(key => {
+            return parseDataType(urow[key])
+          });
+
+          data.push(row);
+        }
       })
       .on("end", () => {
         resolve(data);
