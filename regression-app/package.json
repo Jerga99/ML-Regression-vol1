@@ -23,7 +23,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "models-1": "node ./src/models/mr-example.js",
-    "models-salary": "node ./src/models/mrSalaryModel.js"
+    "models-salary": "node ./src/models/mrSalaryModel.js",
+    "models-car": "node ./src/models/mrCarModel.js"
   },
   "eslintConfig": {
     "extends": [
