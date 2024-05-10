@@ -2,6 +2,7 @@
 const { readCSV } = require("./utils");
 const seedrandom = require("seedrandom");
 const MLR = require("ml-regression-multivariate-linear");
+const fs = require("fs");
 
 const splitData = (data, testSize = 0.3, seed="something") => {
   const rng = seedrandom(seed);
@@ -23,7 +24,20 @@ async function computeModel(path) {
 
   const regression = new MLR(trainInputs, trainOutpus, {intercept: true});
 
-  console.log(regression);
+  const weights = regression.weights.flatMap(w => w);
+
+  const jsonData = JSON.stringify({
+    intercepts: weights[weights.length - 1],
+    slopes: weights.slice(0,  weights.length - 1)
+  }, null, 2);
+
+  fs.writeFile("./public/salaryCoefficients.json", jsonData, (err) => {
+    if (err) {
+      console.error(`Error writing file:`, err);
+    } else {
+      console.log("Coefficients has been saved!");
+    }
+  });
 }
 
 computeModel("./public/age_exp_salary_dataset.csv");
