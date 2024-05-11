@@ -2,6 +2,11 @@ const { readCSV } = require("./utils");
 
 
 const textCategories = ["CarName", "fueltype", "aspiration", "carbody", "drivewheel", "enginelocation", "enginetype", "fuelsystem"];
+const numericCategories = [
+  "symboling", "wheelbase", "carlength","carwidth","carheight",
+  "curbweight", "enginesize", "boreratio", "stroke","compressionratio",
+  "horsepower","peakrpm","citympg","highwaympg"
+];
 const allCategories = ["symboling","CarName","fueltype","aspiration","doornumber","carbody","drivewheel","enginelocation","wheelbase","carlength","carwidth","carheight","curbweight","enginetype","cylindernumber","enginesize","fuelsystem","boreratio","stroke","compressionratio","horsepower","peakrpm","citympg","highwaympg","price"];
 
 const displayUniqueValues = (data, category) => {
@@ -40,14 +45,25 @@ const simplifyCarNames = (data) => {
 
 const processData = (data) => {
   data = simplifyCarNames(data);
+
   const textCategoriesMapping = createCategoryMapping(data);
-  console.log(textCategoriesMapping);
-  return data;
+
+  const processedData = data.map(row => {
+    const dataTable = [];
+
+    dataTable.push(...numericCategories.map(category => row[category]));
+
+    return dataTable;
+  });
+
+  return {processedData};
 }
 
 const computeModel = async (path) => {
   const data = await readCSV(path, allCategories, "dictionary");
-  const processedData = processData(data);
+  const {processedData} = processData(data);
+
+  console.log(processedData);
 }
 
 computeModel("./public/carprice_assignment.csv");
