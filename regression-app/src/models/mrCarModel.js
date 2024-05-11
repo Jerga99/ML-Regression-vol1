@@ -43,18 +43,36 @@ const simplifyCarNames = (data) => {
   return data;
 }
 
+const oneHotEncode = (value, categoryOptions) => {
+  return categoryOptions.map(categoryItem => value === categoryItem ? 1 : 0);
+}
+
 const processData = (data) => {
   data = simplifyCarNames(data);
-
   const textCategoriesMapping = createCategoryMapping(data);
 
   const processedData = data.map(row => {
     const newRow = [];
 
+    for (const key in row) {
+      if (textCategoriesMapping.has(key)) {
+        const categoryValues = textCategoriesMapping.get(key);
+        const encodedValues = oneHotEncode(row[key], categoryValues);
+        newRow.push(...encodedValues);
+
+        // oneHotEncode(row[key], categoryValues).forEach((value, index) => {
+        //   newRow.push(`${key}: ${categoryValues[index]} - ${value}`)
+        // })
+
+      }
+    }
+
     newRow.push(...numericCategories.map(category => row[category]));
+    // newRow.push(...numericCategories.map(category => `${category} - ${row[category]}`));
     return newRow;
   });
 
+  console.log(processedData);
   return {processedData};
 }
 
