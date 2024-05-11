@@ -49,11 +49,10 @@ const processData = (data) => {
   const textCategoriesMapping = createCategoryMapping(data);
 
   const processedData = data.map(row => {
-    const dataTable = [];
+    const newRow = [];
 
-    dataTable.push(...numericCategories.map(category => row[category]));
-
-    return dataTable;
+    newRow.push(...numericCategories.map(category => row[category]));
+    return newRow;
   });
 
   return {processedData};
