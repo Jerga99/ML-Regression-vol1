@@ -7,6 +7,7 @@ const numericCategories = [
   "curbweight", "enginesize", "boreratio", "stroke","compressionratio",
   "horsepower","peakrpm","citympg","highwaympg"
 ];
+const textToNumberCategories = ["doornumber", "cylindernumber"];
 const allCategories = ["symboling","CarName","fueltype","aspiration","doornumber","carbody","drivewheel","enginelocation","wheelbase","carlength","carwidth","carheight","curbweight","enginetype","cylindernumber","enginesize","fuelsystem","boreratio","stroke","compressionratio","horsepower","peakrpm","citympg","highwaympg","price"];
 
 const displayUniqueValues = (data, category) => {
@@ -14,6 +15,28 @@ const displayUniqueValues = (data, category) => {
   data.forEach(row => {
     set.add(row[category]);
   });
+
+  console.log(set);
+}
+
+const parseTextToNumber = (textNumber) => {
+  switch(textNumber) {
+    case "two":
+      return 2;
+    case "three":
+      return 3;
+    case "four":
+      return 4;
+    case "five":
+      return 5;
+    case "six":
+      return 6;
+    case "eight":
+      return 8;
+    case "twelve":
+      return 12;
+    default: return 0;
+  }
 }
 
 const createCategoryMapping = (data) => {
@@ -63,12 +86,16 @@ const processData = (data) => {
         // oneHotEncode(row[key], categoryValues).forEach((value, index) => {
         //   newRow.push(`${key}: ${categoryValues[index]} - ${value}`)
         // })
-
       }
     }
 
     newRow.push(...numericCategories.map(category => row[category]));
     // newRow.push(...numericCategories.map(category => `${category} - ${row[category]}`));
+
+    textToNumberCategories.forEach(category => {
+      newRow.push(parseTextToNumber(row[category]));
+    });
+
     return newRow;
   });
 
@@ -78,9 +105,9 @@ const processData = (data) => {
 
 const computeModel = async (path) => {
   const data = await readCSV(path, allCategories, "dictionary");
+
   const {processedData} = processData(data);
 
-  console.log(processedData);
 }
 
 computeModel("./public/carprice_assignment.csv");
