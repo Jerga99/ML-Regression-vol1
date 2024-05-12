@@ -1,6 +1,7 @@
 
 const { readCSV, splitData, calculateR2 } = require("./utils");
 const MLR = require("ml-regression-multivariate-linear");
+const math = require("mathjs");
 
 const textCategories = ["CarName", "fueltype", "aspiration", "carbody", "drivewheel", "enginelocation", "enginetype", "fuelsystem"];
 const numericCategories = [
@@ -125,10 +126,26 @@ const testModel = (testData, model) => {
   return r2;
 }
 
+const computeCorrelations = (data) => {
+  const prices = data.map(row => row[row.length -1]);
+
+  const correlations = rowCategories.map((_, index) => {
+    const inputData = data.map(row => row[index]);
+    const correlation = math.corr(inputData, prices);
+
+    return Math.abs(correlation);
+  });
+
+  return correlations;
+}
+
 const computeModel = async (path) => {
   const data = await readCSV(path, allCategories, "dictionary");
-
   const {processedData} = processData(data);
+
+  const correlations = computeCorrelations(processedData);
+  console.log(correlations);
+
   const {trainData, testData} = splitData(processedData);
   const model = trainModel(trainData);
   const r2 = testModel(testData, model);
