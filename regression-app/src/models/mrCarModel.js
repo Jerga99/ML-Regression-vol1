@@ -9,6 +9,7 @@ const numericCategories = [
 ];
 const textToNumberCategories = ["doornumber", "cylindernumber"];
 const allCategories = ["symboling","CarName","fueltype","aspiration","doornumber","carbody","drivewheel","enginelocation","wheelbase","carlength","carwidth","carheight","curbweight","enginetype","cylindernumber","enginesize","fuelsystem","boreratio","stroke","compressionratio","horsepower","peakrpm","citympg","highwaympg","price"];
+const rowCategories = [];
 
 const displayUniqueValues = (data, category) => {
   const set = new Set();
@@ -74,6 +75,12 @@ const processData = (data) => {
   data = simplifyCarNames(data);
   const textCategoriesMapping = createCategoryMapping(data);
 
+  textCategoriesMapping.forEach((categoryValues, categoryName) => {
+    categoryValues.forEach((value) => {
+      rowCategories.push(`${categoryName} ${value}`);
+    });
+  });
+
   const processedData = data.map(row => {
     const newRow = [];
 
@@ -82,15 +89,10 @@ const processData = (data) => {
         const categoryValues = textCategoriesMapping.get(key);
         const encodedValues = oneHotEncode(row[key], categoryValues);
         newRow.push(...encodedValues);
-
-        // oneHotEncode(row[key], categoryValues).forEach((value, index) => {
-        //   newRow.push(`${key}: ${categoryValues[index]} - ${value}`)
-        // })
       }
     }
 
     newRow.push(...numericCategories.map(category => row[category]));
-    // newRow.push(...numericCategories.map(category => `${category} - ${row[category]}`));
 
     textToNumberCategories.forEach(category => {
       newRow.push(parseTextToNumber(row[category]));
@@ -99,6 +101,9 @@ const processData = (data) => {
     return newRow;
   });
 
+  rowCategories.push(...numericCategories, ...textToNumberCategories);
+
+  console.log(rowCategories);
   console.log(processedData);
   return {processedData};
 }
