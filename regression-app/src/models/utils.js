@@ -57,4 +57,12 @@ const splitData = (data, testSize = 0.3, seed="something") => {
   return {trainData, testData};
 }
 
-module.exports = {parseDataType, readCSV, splitData}
+const calculateR2 = (testOutputs, predictions) => {
+  const yMean = testOutputs.reduce((sum, val) => sum + val, 0) / testOutputs.length;
+  const ssRes = testOutputs.reduce((sum, output, i) => sum + Math.pow(output - predictions[i], 2), 0);
+  const ssTot = testOutputs.reduce((sum, output) => sum + Math.pow(output - yMean, 2), 0);
+
+  return 1 - (ssRes / ssTot);
+}
+
+module.exports = {parseDataType, readCSV, splitData, calculateR2}

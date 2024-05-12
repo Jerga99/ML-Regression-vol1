@@ -1,5 +1,5 @@
 
-const { readCSV, splitData } = require("./utils");
+const { readCSV, splitData, calculateR2 } = require("./utils");
 const MLR = require("ml-regression-multivariate-linear");
 
 const textCategories = ["CarName", "fueltype", "aspiration", "carbody", "drivewheel", "enginelocation", "enginetype", "fuelsystem"];
@@ -116,15 +116,23 @@ const trainModel = (trainData) => {
   return mlr;
 }
 
+const testModel = (testData, model) => {
+  const inputs = testData.map(d => d.slice(0, -1));
+  const outputs = testData.map(d => d.slice(-1)[0]);
+
+  const predictions = inputs.map(input => model.predict(input));
+  const r2 = calculateR2(outputs, predictions);
+  return r2;
+}
+
 const computeModel = async (path) => {
   const data = await readCSV(path, allCategories, "dictionary");
 
   const {processedData} = processData(data);
   const {trainData, testData} = splitData(processedData);
   const model = trainModel(trainData);
-
-  console.log(model);
-
+  const r2 = testModel(testData, model);
+  console.log(r2);
 }
 
 computeModel("./public/carprice_assignment.csv");
