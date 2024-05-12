@@ -1,4 +1,5 @@
-const { readCSV } = require("./utils");
+
+const { readCSV, splitData } = require("./utils");
 
 
 const textCategories = ["CarName", "fueltype", "aspiration", "carbody", "drivewheel", "enginelocation", "enginetype", "fuelsystem"];
@@ -98,13 +99,12 @@ const processData = (data) => {
       newRow.push(parseTextToNumber(row[category]));
     });
 
+    newRow.push(row.price);
     return newRow;
   });
 
   rowCategories.push(...numericCategories, ...textToNumberCategories);
 
-  console.log(rowCategories);
-  console.log(processedData);
   return {processedData};
 }
 
@@ -112,6 +112,13 @@ const computeModel = async (path) => {
   const data = await readCSV(path, allCategories, "dictionary");
 
   const {processedData} = processData(data);
+  const {trainData, testData} = splitData(processedData);
+
+  console.log("-----TRAIN DATA------");
+  console.log(trainData.length);
+
+  console.log("-----TEST DATA------");
+  console.log(testData.length);
 
 }
 

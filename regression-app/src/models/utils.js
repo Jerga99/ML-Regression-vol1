@@ -1,6 +1,7 @@
 
 const fs = require("fs");
 const {parse} = require("csv-parse");
+const seedrandom = require("seedrandom");
 
 const parseDataType = (data) => {
 
@@ -46,4 +47,14 @@ const readCSV = (filePath, keys, parsing) => {
   });
 }
 
-module.exports = {parseDataType, readCSV}
+const splitData = (data, testSize = 0.3, seed="something") => {
+  const rng = seedrandom(seed);
+  const shuffled = data.slice().sort(() => 0.5 - rng());
+  const testCount = Math.floor(data.length * testSize);
+
+  const testData = shuffled.slice(0, testCount);
+  const trainData = shuffled.slice(testCount);
+  return {trainData, testData};
+}
+
+module.exports = {parseDataType, readCSV, splitData}
