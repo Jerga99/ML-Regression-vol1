@@ -6,6 +6,7 @@ const MrCarPrediction = () => {
   const [model, setModel] = useState(null);
   const [plots, setPlots] = useState([]);
   const [inputs, setInputs] = useState({});
+  const [carBrands, setCarBrands] = useState([]);
 
   useEffect(() => {
     fetch("carPrediction.json")
@@ -13,6 +14,12 @@ const MrCarPrediction = () => {
       .then(modelData => {
         setModel(modelData);
         createPlots(modelData.trainData, modelData.categories);
+
+        const brands = modelData.categories
+          .filter(name => name.startsWith("CarName"))
+          .map(name => name.split(" ")[1]);
+
+        setCarBrands(brands);
 
         const inputs = modelData.categories.map(category => {
           return {[category]: ""}
@@ -57,7 +64,18 @@ const MrCarPrediction = () => {
     <div>
       <div style={{textAlign: "center"}}>
         <div>
-          { model.categories.map((category, index) =>
+          <select
+            value={carBrands.find(brand => inputs[`CarName ${brand}`] === 1) || ""}
+          >
+            <option value="">Select a brand</option>
+            { carBrands.map(brand => (
+              <option key={brand} value={brand}>{brand}</option>
+            ))}
+          </select>
+
+          { model.categories
+            .filter(category => !category.startsWith("CarName"))
+            .map((category, index) =>
             <div key={`${category}-${index}`}>
               <label>{category}:</label>
               <input
