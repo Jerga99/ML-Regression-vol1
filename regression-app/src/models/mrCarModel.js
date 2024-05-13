@@ -144,8 +144,16 @@ const computeModel = async (path) => {
   const {processedData} = processData(data);
 
   const correlations = computeCorrelations(processedData);
-  console.log(correlations);
+  const threshold = 0.4;
 
+  const corCategories = correlations
+    .map((cor, index) => ({cor, index}))
+    .filter(item => item.cor > threshold)
+    .map(item => rowCategories[item.index])
+
+  console.log(corCategories);
+
+  console.log(processedData);
   const {trainData, testData} = splitData(processedData);
   const model = trainModel(trainData);
   const r2 = testModel(testData, model);
