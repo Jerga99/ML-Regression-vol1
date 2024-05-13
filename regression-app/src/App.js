@@ -5,11 +5,13 @@ import ExamScorePrediction from './components/ExamScorePrediction';
 import ModelSelection from './components/ModelSelection';
 import MrExamScorePrediction from './components/MrExamScorePrediction';
 import MrSalaryPrediction from './components/MrSalaryPrediction';
+import MrCarPrediction from './components/MrCarPrediction';
 
 const modelMap = {
   "1": ExamScorePrediction,
   "2": MrExamScorePrediction,
-  "3": MrSalaryPrediction
+  "3": MrSalaryPrediction,
+  "4": MrCarPrediction
 }
 
 function App() {

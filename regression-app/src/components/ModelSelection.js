@@ -25,7 +25,15 @@ const model3 = {
   img: "https://plus.unsplash.com/premium_photo-1661281350976-59b9514e5364?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8b2ZmaWNlfGVufDB8fDB8fHww"
 }
 
-const models = [model1, model2, model3];
+const model4 = {
+  id: "4",
+  type: "Multiple Linear Regression",
+  name: "Car Prediction",
+  description: "Predicts car based on multiple categories",
+  img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=3683&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+}
+
+const models = [model1, model2, model3, model4];
 
 
 function ModelSelection({onChange, activeId}) {
