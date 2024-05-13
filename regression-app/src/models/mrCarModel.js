@@ -198,16 +198,22 @@ const computeModel = async (path) => {
   const correlations = computeCorrelations(processedData);
   const threshold = 0.3;
   const includeFields = ["CarName"];
+  const blockedFields = ["citympg"];
 
   const corCategories = correlations
     .map((cor, index) => ({cor, index}))
-    .filter(item => item.cor > threshold || includeFields.includes(rowCategories[item.index].split(" ")[0]))
+    .filter(item => ((
+      item.cor > threshold ||
+      includeFields.includes(rowCategories[item.index].split(" ")[0]))
+    ) && !blockedFields.includes(rowCategories[item.index].split(" ")[0]))
     .map(item => rowCategories[item.index])
+
+  console.log(corCategories);
 
 
   const {corData} = extractCorrelatedData(processedData, corCategories);
 
-  const {trainData, testData} = splitData(corData);
+  const {trainData, testData} = splitData(corData, 0.2, "random1000000");
   const model = trainModel(trainData);
   const r2 = testModel(testData, model);
   console.log(r2);
