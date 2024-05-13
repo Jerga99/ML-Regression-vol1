@@ -139,12 +139,30 @@ const computeCorrelations = (data) => {
   return correlations;
 }
 
+const extractCorrelatedData = (processedData, corCategories) => {
+  const corData = processedData.map((row, index) => {
+    const newRow = [];
+
+    corCategories.forEach(category => {
+      const index = rowCategories.indexOf(category);
+      if (index >= 0) {
+        newRow.push(row[index]);
+      }
+    });
+
+    newRow.push(row[row.length - 1]);
+    return newRow;
+  });
+
+  return {corData};
+}
+
 const computeModel = async (path) => {
   const data = await readCSV(path, allCategories, "dictionary");
   const {processedData} = processData(data);
 
   const correlations = computeCorrelations(processedData);
-  const threshold = 0.4;
+  const threshold = 0.3;
 
   const corCategories = correlations
     .map((cor, index) => ({cor, index}))
@@ -153,8 +171,9 @@ const computeModel = async (path) => {
 
   console.log(corCategories);
 
-  console.log(processedData);
-  const {trainData, testData} = splitData(processedData);
+  const {corData} = extractCorrelatedData(processedData, corCategories);
+
+  const {trainData, testData} = splitData(corData);
   const model = trainModel(trainData);
   const r2 = testModel(testData, model);
   console.log(r2);
