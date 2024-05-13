@@ -6,6 +6,7 @@ const MrCarPrediction = () => {
   const [plots, setPlots] = useState([]);
   const [inputs, setInputs] = useState({});
   const [carBrands, setCarBrands] = useState([]);
+  const [prediction, setPrediction] = useState(null);
 
   useEffect(() => {
     fetch("carPrediction.json")
@@ -36,8 +37,18 @@ const MrCarPrediction = () => {
   }, []);
 
   useEffect(() => {
-    console.log(inputs);
-  }, [inputs])
+    if (!model) { return; }
+
+    const {intercept, slopes} = model;
+    let sum = intercept;
+
+    model.categories.forEach((category, index) => {
+      const inputValue = parseFloat(inputs[category]) || 0;
+      sum += inputValue * slopes[index];
+    });
+
+    setPrediction(sum.toFixed(2));
+  }, [inputs, model])
 
   const createPlots = (trainData, categories) => {
     if (!trainData) {return;}
@@ -102,6 +113,9 @@ const MrCarPrediction = () => {
               />
             </div>
           )}
+          <div style={{margin: 40, fontSize: 30}}>
+            Predicted price: <b>${prediction}</b>
+          </div>
         </div>
       </div>
       <div>
