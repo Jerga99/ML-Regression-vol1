@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 
-
 const MrCarPrediction = () => {
   const [model, setModel] = useState(null);
   const [plots, setPlots] = useState([]);
@@ -23,8 +22,11 @@ const MrCarPrediction = () => {
 
         const inputs = {};
 
+        const oneEncodedCat = ["CarName", "drivewheel", "enginelocation", "enginetype", "fuelsystem"];
         modelData.categories.forEach(category => {
-          inputs[category] = "";
+          const avg = modelData.trainData.reduce((sum, row) => sum + row[category], 0) / modelData.trainData.length;
+
+          inputs[category] = oneEncodedCat.includes(category.split(" ")[0]) ? "" : avg.toFixed(2);
         });
 
         setInputs(inputs);
