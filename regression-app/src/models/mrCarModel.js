@@ -2,6 +2,7 @@
 const { readCSV, splitData, calculateR2 } = require("./utils");
 const MLR = require("ml-regression-multivariate-linear");
 const math = require("mathjs");
+const fs = require("fs");
 
 const textCategories = ["CarName", "fueltype", "aspiration", "carbody", "drivewheel", "enginelocation", "enginetype", "fuelsystem"];
 const numericCategories = [
@@ -157,6 +158,39 @@ const extractCorrelatedData = (processedData, corCategories) => {
   return {corData};
 }
 
+const exportData = (trainData, model, corCategories) => {
+
+  const trainDataExport = trainData.map(listRow => {
+    const row = {};
+
+    corCategories.forEach((category, index) => {
+      row[category] = listRow[index];
+    });
+
+    row.price = listRow[listRow.length - 1];
+    return row;
+  });
+
+  const weights = model.weights.flatMap(w => w);
+
+  const dataToExport = {
+    intercept: weights[weights.length - 1],
+    slopes: weights.slice(0, weights.length - 1),
+    trainData: trainDataExport
+  };
+
+  const jsonData = JSON.stringify(dataToExport, null, 2);
+
+  fs.writeFile("./public/carPrediction.json", jsonData, (err) => {
+    if (err) {
+      console.error(`Error writing file:`, err);
+    } else {
+      console.log("Coefficients has been saved!");
+    }
+  });
+
+}
+
 const computeModel = async (path) => {
   const data = await readCSV(path, allCategories, "dictionary");
   const {processedData} = processData(data);
@@ -177,6 +211,9 @@ const computeModel = async (path) => {
   const model = trainModel(trainData);
   const r2 = testModel(testData, model);
   console.log(r2);
+
+  exportData(trainData, model, corCategories);
+
 }
 
 computeModel("./public/carprice_assignment.csv");
