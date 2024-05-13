@@ -163,13 +163,13 @@ const computeModel = async (path) => {
 
   const correlations = computeCorrelations(processedData);
   const threshold = 0.3;
+  const includeFields = ["CarName"];
 
   const corCategories = correlations
     .map((cor, index) => ({cor, index}))
-    .filter(item => item.cor > threshold)
+    .filter(item => item.cor > threshold || includeFields.includes(rowCategories[item.index].split(" ")[0]))
     .map(item => rowCategories[item.index])
 
-  console.log(corCategories);
 
   const {corData} = extractCorrelatedData(processedData, corCategories);
 
