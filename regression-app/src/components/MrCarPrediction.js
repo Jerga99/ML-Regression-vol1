@@ -5,22 +5,33 @@ import Plot from "react-plotly.js";
 const MrCarPrediction = () => {
   const [model, setModel] = useState(null);
   const [plots, setPlots] = useState([]);
+  const [inputs, setInputs] = useState({});
 
   useEffect(() => {
     fetch("carPrediction.json")
       .then(response => response.json())
       .then(modelData => {
         setModel(modelData);
-        createPlots(modelData.trainData);
+        createPlots(modelData.trainData, modelData.categories);
+
+        const inputs = modelData.categories.map(category => {
+          return {[category]: ""}
+        });
+
+        setInputs(inputs);
+
       })
       .catch(error => console.error("Error loading the model: ", error));
   }, []);
 
-  const createPlots = (trainData) => {
+  useEffect(() => {
+    console.log(inputs);
+  }, [inputs])
+
+  const createPlots = (trainData, categories) => {
     if (!trainData) {return;}
 
-    const newPlots = Object.keys(trainData[0])
-      .filter(key => key !== "price")
+    const newPlots = categories
       .map(category => {
         const x = trainData.map(item => item[category]);
         const y = trainData.map(item => item.price);
@@ -38,9 +49,29 @@ const MrCarPrediction = () => {
     setPlots(newPlots);
   }
 
+  if (!model) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div>
+      <div style={{textAlign: "center"}}>
+        <div>
+          { model.categories.map((category, index) =>
+            <div key={`${category}-${index}`}>
+              <label>{category}:</label>
+              <input
+                type="number"
+                name={category}
+                value={inputs[category] || ""}
+                onChange={(e) => {
+                  setInputs({...inputs, [category]: e.target.value})
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </div>
       <div>
         { plots.map((plotData, index) =>
           <div key={plotData.name} style={{width: "100%", height: 400, marginBottom: 20}}>

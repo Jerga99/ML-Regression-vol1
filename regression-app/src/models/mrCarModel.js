@@ -176,7 +176,8 @@ const exportData = (trainData, model, corCategories) => {
   const dataToExport = {
     intercept: weights[weights.length - 1],
     slopes: weights.slice(0, weights.length - 1),
-    trainData: trainDataExport
+    trainData: trainDataExport,
+    categories: corCategories
   };
 
   const jsonData = JSON.stringify(dataToExport, null, 2);
