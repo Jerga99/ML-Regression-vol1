@@ -21,8 +21,10 @@ const MrCarPrediction = () => {
 
         setCarBrands(brands);
 
-        const inputs = modelData.categories.map(category => {
-          return {[category]: ""}
+        const inputs = {};
+
+        modelData.categories.forEach(category => {
+          inputs[category] = "";
         });
 
         setInputs(inputs);
@@ -56,6 +58,15 @@ const MrCarPrediction = () => {
     setPlots(newPlots);
   }
 
+  const handleBrandChange = (e) => {
+    const brand = e.target.value;
+
+    const brandInputs = carBrands.reduce((inputs, b) => ({...inputs, [`CarName ${b}`]: 0}) ,{});
+    brandInputs[`CarName ${brand}`] = 1;
+
+    setInputs({...inputs, ...brandInputs});
+  }
+
   if (!model) {
     return <div>Loading...</div>
   }
@@ -66,6 +77,7 @@ const MrCarPrediction = () => {
         <div>
           <select
             value={carBrands.find(brand => inputs[`CarName ${brand}`] === 1) || ""}
+            onChange={handleBrandChange}
           >
             <option value="">Select a brand</option>
             { carBrands.map(brand => (
